@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_map_app/models/place_model.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HomeView extends StatefulWidget {
@@ -18,7 +19,7 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
     initialCameraPosition = const CameraPosition(
-      target: LatLng(29.995330581727064, 31.2059660027455),
+      target: LatLng(29.99552098735423, 31.205921201848618),
       zoom: 11,
     );
     initNarkers();
@@ -81,11 +82,9 @@ class _HomeViewState extends State<HomeView> {
   }
 
   void initNarkers() {
-    var myMarker = const Marker(
-      markerId: MarkerId('1'),
-      position: LatLng(29.995330581727064, 31.2059660027455),
-    );
-
-    markers.add(myMarker);
+    var myMarker = places.map(
+      (e) => Marker(markerId: MarkerId(e.id.toString()), position: e.position),
+    ).toSet();
+    markers.addAll(myMarker);
   }
 }

@@ -43,4 +43,4 @@ app.*.map.json
 /android/app/release
 
 # related to project
-/lib/secret_keys.dart
+lib/secret_keys.dart

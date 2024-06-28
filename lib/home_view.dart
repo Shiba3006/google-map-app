@@ -10,16 +10,71 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   late CameraPosition initialCameraPosition;
+  late GoogleMapController mapController;
+  late String mapStyle;
 
   @override
   void initState() {
     super.initState();
     initialCameraPosition = const CameraPosition(
-        target: LatLng(37.42796133580664, -122.085749655962), zoom: 14.4746);
+      target: LatLng(29.995330581727064, 31.2059660027455),
+      zoom: 11,
+    );
+    initMapStyle();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    mapController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return GoogleMap(initialCameraPosition: initialCameraPosition);
+    return Stack(
+      children: [
+        GoogleMap(
+          /*
+          cameraTargetBounds: CameraTargetBounds(
+            LatLngBounds(
+              southwest: const LatLng(29.978939358240478, 31.16066904727755),
+              northeast: const LatLng(30.095898566643577, 31.302491311725433),
+            ),
+          ),
+          */
+          // mapType: MapType.hybrid,
+          style: mapStyle,
+          zoomControlsEnabled: false,
+          onMapCreated: (controller) {
+            mapController = controller;
+            initMapStyle();
+          },
+          initialCameraPosition: initialCameraPosition,
+        ),
+        Positioned(
+          bottom: 20,
+          right: 20,
+          left: 20,
+          child: ElevatedButton(
+            onPressed: () {
+              mapController.animateCamera(
+                CameraUpdate.newLatLng(
+                  const LatLng(30.29695379175755, 31.768373079394056),
+                ),
+              );
+              setState(() {});
+            },
+            child: const Text(
+              'Change location',
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void initMapStyle() async {
+    mapStyle = await DefaultAssetBundle.of(context)
+        .loadString('assets/google_map_styles/night_map_style.json');
   }
 }

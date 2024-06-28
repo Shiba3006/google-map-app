@@ -11,7 +11,8 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   late CameraPosition initialCameraPosition;
   late GoogleMapController mapController;
-  late String mapStyle;
+  String? mapStyle;
+  Set<Marker> markers = {};
 
   @override
   void initState() {
@@ -20,13 +21,19 @@ class _HomeViewState extends State<HomeView> {
       target: LatLng(29.995330581727064, 31.2059660027455),
       zoom: 11,
     );
-    initMapStyle();
+    initNarkers();
   }
 
   @override
   void dispose() {
     super.dispose();
     mapController.dispose();
+  }
+
+  void initMapStyle() async {
+    mapStyle = await DefaultAssetBundle.of(context)
+        .loadString('assets/google_map_styles/hoper_map_style.json');
+    setState(() {});
   }
 
   @override
@@ -43,6 +50,7 @@ class _HomeViewState extends State<HomeView> {
           ),
           */
           // mapType: MapType.hybrid,
+          markers: markers,
           style: mapStyle,
           zoomControlsEnabled: false,
           onMapCreated: (controller) {
@@ -62,7 +70,6 @@ class _HomeViewState extends State<HomeView> {
                   const LatLng(30.29695379175755, 31.768373079394056),
                 ),
               );
-              setState(() {});
             },
             child: const Text(
               'Change location',
@@ -73,8 +80,12 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  void initMapStyle() async {
-    mapStyle = await DefaultAssetBundle.of(context)
-        .loadString('assets/google_map_styles/night_map_style.json');
+  void initNarkers() {
+    var myMarker = const Marker(
+      markerId: MarkerId('1'),
+      position: LatLng(29.995330581727064, 31.2059660027455),
+    );
+
+    markers.add(myMarker);
   }
 }

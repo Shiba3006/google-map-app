@@ -44,3 +44,5 @@ app.*.map.json
 
 # related to project
 lib/secret_keys.dart
+android/app/src/main/AndroidManifest.xml
+ios/Runner/AppDelegate.swift

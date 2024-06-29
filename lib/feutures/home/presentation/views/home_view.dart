@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_map_app/feutures/home/data/models/place_model.dart';
 import 'package:google_map_app/feutures/home/presentation/manager/cubit/google_map_cubit.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -14,6 +15,8 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  late Location location;
+
   @override
   void initState() {
     super.initState();
@@ -21,6 +24,8 @@ class _HomeViewState extends State<HomeView> {
     cubit.initCameraPosition();
     cubit.initMapStyle(context: context);
     cubit.initGoogleMap();
+    location = Location();
+    checkAndRequestLocation();
   }
 
   @override
@@ -40,8 +45,8 @@ class _HomeViewState extends State<HomeView> {
               ),
               */
               // mapType: MapType.hybrid,
-              circles: cubit.circles,
               // polygons: cubit.polygons,
+              circles: cubit.circles,
               polylines: cubit.polylines,
               markers: cubit.markers,
               style: cubit.mapStyle,
@@ -73,5 +78,30 @@ class _HomeViewState extends State<HomeView> {
         );
       },
     );
+  }
+
+  Future<void> checkAndRequestLocationService() async {
+    bool isServiceEnabled = await location.serviceEnabled();
+    if (!isServiceEnabled) {
+      isServiceEnabled = await location.requestService();
+      if (!isServiceEnabled) {
+        // TODO: handle this case
+      }
+    }
+  }
+
+  Future<void> checkAndRequestLocationPermision() async {
+    var permissionStatus = await location.hasPermission();
+    if (permissionStatus == PermissionStatus.denied) {
+      permissionStatus = await location.requestPermission();
+      if (permissionStatus != PermissionStatus.granted) {
+        // TODO: handle this case
+      }
+    }
+  }
+
+  void checkAndRequestLocation() async {
+    await checkAndRequestLocationPermision();
+    await checkAndRequestLocationService();
   }
 }

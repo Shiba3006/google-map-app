@@ -34,3 +34,11 @@ city view 10 -> 12
 street view 13 -> 17
 building view 18 -> 20
 */
+
+/*
+Using location:
+1- inquire about location service.
+2- request permission 
+3- get location
+4- display
+*/

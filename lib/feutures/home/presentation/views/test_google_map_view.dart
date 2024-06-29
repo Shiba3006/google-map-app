@@ -15,8 +15,6 @@ class TestGoogleMapView extends StatefulWidget {
 }
 
 class _TestGoogleMapViewState extends State<TestGoogleMapView> {
-  late Location location;
-
   @override
   void initState() {
     super.initState();
@@ -24,8 +22,6 @@ class _TestGoogleMapViewState extends State<TestGoogleMapView> {
     cubit.initCameraPosition();
     cubit.initMapStyle(context: context);
     cubit.initGoogleMap();
-    location = Location();
-    checkAndRequestLocation();
   }
 
   @override
@@ -78,30 +74,5 @@ class _TestGoogleMapViewState extends State<TestGoogleMapView> {
         );
       },
     );
-  }
-
-  Future<void> checkAndRequestLocationService() async {
-    bool isServiceEnabled = await location.serviceEnabled();
-    if (!isServiceEnabled) {
-      isServiceEnabled = await location.requestService();
-      if (!isServiceEnabled) {
-        // TODO: handle this case
-      }
-    }
-  }
-
-  Future<void> checkAndRequestLocationPermision() async {
-    var permissionStatus = await location.hasPermission();
-    if (permissionStatus == PermissionStatus.denied) {
-      permissionStatus = await location.requestPermission();
-      if (permissionStatus != PermissionStatus.granted) {
-        // TODO: handle this case
-      }
-    }
-  }
-
-  void checkAndRequestLocation() async {
-    await checkAndRequestLocationPermision();
-    await checkAndRequestLocationService();
   }
 }

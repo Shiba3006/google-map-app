@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_map_app/feutures/home/presentation/manager/cubit/google_map_cubit.dart';
+import 'package:google_map_app/feutures/home/presentation/views/location_view.dart';
 import 'package:google_map_app/feutures/home/presentation/views/test_google_map_view.dart';
 
 void main() {
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const TestGoogleMapView(),
+        home: const LocatioView(),
       ),
     );
   }

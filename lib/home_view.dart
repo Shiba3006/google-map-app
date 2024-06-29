@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:ui' as ui;
+import 'package:flutter/services.dart';
 import 'package:google_map_app/models/place_model.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -20,9 +22,9 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
     initialCameraPosition = const CameraPosition(
       target: LatLng(29.99552098735423, 31.205921201848618),
-      zoom: 11,
+      zoom: 15,
     );
-    initNarkers();
+    initMarkers();
   }
 
   @override
@@ -35,6 +37,37 @@ class _HomeViewState extends State<HomeView> {
     mapStyle = await DefaultAssetBundle.of(context)
         .loadString('assets/google_map_styles/hoper_map_style.json');
     setState(() {});
+  }
+
+  Future<Uint8List> getBytesFromAsset(String path, double width) async {
+    var imageData = await rootBundle.load(path);
+    var imageCodec = await ui.instantiateImageCodec(
+      imageData.buffer.asUint8List(),
+      targetWidth: width.round(),
+    );
+    var imageFrameInfo = await imageCodec.getNextFrame();
+    var imageByteData = await imageFrameInfo.image.toByteData(
+      format: ui.ImageByteFormat.png,
+    );
+    return imageByteData!.buffer.asUint8List();
+  }
+
+  void initMarkers() async {
+    var markerIcon = await BitmapDescriptor.asset(
+      const ImageConfiguration(),
+      'marker_icon.png',
+    );
+    var myMarker = places
+        .map(
+          (e) => Marker(
+            markerId: MarkerId(e.id.toString()),
+            position: e.position,
+            infoWindow: InfoWindow(title: e.name),
+            icon: markerIcon,
+          ),
+        )
+        .toSet();
+    markers.addAll(myMarker);
   }
 
   @override
@@ -79,12 +112,5 @@ class _HomeViewState extends State<HomeView> {
         ),
       ],
     );
-  }
-
-  void initNarkers() {
-    var myMarker = places.map(
-      (e) => Marker(markerId: MarkerId(e.id.toString()), position: e.position),
-    ).toSet();
-    markers.addAll(myMarker);
   }
 }

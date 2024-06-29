@@ -18,6 +18,7 @@ class _HomeViewState extends State<HomeView> {
   Set<Marker> markers = {};
   Set<Polyline> polylines = {};
   Set<Polygon> polygons = {};
+  Set<Circle> circles = {};
 
   @override
   void initState() {
@@ -28,7 +29,8 @@ class _HomeViewState extends State<HomeView> {
     );
     initMarkers();
     initPolyLines();
-    initPolyGons();
+    // initPolyGons();
+    initCircles();
   }
 
   @override
@@ -140,6 +142,19 @@ class _HomeViewState extends State<HomeView> {
     polygons.add(polygon);
   }
 
+  void initCircles() {
+    circles.add(
+      Circle(
+        circleId: const CircleId('1'),
+        center: const LatLng(29.993528625268983, 31.20492801322981),
+        radius: 2000,
+        fillColor: Colors.red.withOpacity(0.2),
+        strokeColor: Colors.red,
+        strokeWidth: 2,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -154,7 +169,8 @@ class _HomeViewState extends State<HomeView> {
           ),
           */
           // mapType: MapType.hybrid,
-          polygons: polygons,
+          circles: circles,
+          // polygons: polygons,
           polylines: polylines,
           markers: markers,
           style: mapStyle,

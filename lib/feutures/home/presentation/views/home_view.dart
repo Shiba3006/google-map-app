@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/services.dart';
-import 'package:google_map_app/models/place_model.dart';
+import 'package:google_map_app/feutures/home/data/models/place_model.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HomeView extends StatefulWidget {

@@ -7,14 +7,14 @@ import 'package:google_map_app/feutures/home/presentation/manager/cubit/google_m
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
-class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+class TestGoogleMapView extends StatefulWidget {
+  const TestGoogleMapView({super.key});
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  State<TestGoogleMapView> createState() => _TestGoogleMapViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _TestGoogleMapViewState extends State<TestGoogleMapView> {
   late Location location;
 
   @override

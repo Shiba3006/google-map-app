@@ -17,16 +17,18 @@ class _HomeViewState extends State<HomeView> {
   String? mapStyle;
   Set<Marker> markers = {};
   Set<Polyline> polylines = {};
+  Set<Polygon> polygons = {};
 
   @override
   void initState() {
     super.initState();
     initialCameraPosition = const CameraPosition(
       target: LatLng(29.99552098735423, 31.205921201848618),
-      zoom: 17,
+      zoom: 12,
     );
     initMarkers();
     initPolyLines();
+    initPolyGons();
   }
 
   @override
@@ -75,13 +77,13 @@ class _HomeViewState extends State<HomeView> {
 
   void initPolyLines() {
     Polyline polyline = const Polyline(
-      patterns: [ // change line pattern
+      patterns: [
+        // change line pattern
         PatternItem.dot,
       ],
-      width: 5,  // change line width
-      startCap: Cap.roundCap, // change start cap
-      endCap: Cap.roundCap,
-      zIndex: 2, 
+      width: 5, // change line width
+
+      zIndex: 2,
       color: Colors.red,
       polylineId: PolylineId('1'),
       points: [
@@ -93,6 +95,8 @@ class _HomeViewState extends State<HomeView> {
     );
     Polyline polyline2 = const Polyline(
       zIndex: 1,
+      startCap: Cap.roundCap, // change start cap
+      endCap: Cap.roundCap,
       polylineId: PolylineId('2'),
       points: [
         LatLng(29.994767182783182, 31.206667836252358),
@@ -110,7 +114,30 @@ class _HomeViewState extends State<HomeView> {
     polylines.add(polyline);
     polylines.add(polyline2);
     polylines.add(polyline3);
+  }
 
+  void initPolyGons() {
+    Polygon polygon = Polygon(
+      holes: const [
+        [
+          LatLng(29.96613759704386, 31.233430099160845),
+          LatLng(29.974984260067497, 31.230732531996825),
+          LatLng(29.97999145603056, 31.22090568018503),
+          LatLng(29.97097832156766, 31.225530081037643),
+        ],
+      ],
+      fillColor: Colors.green.withOpacity(0.2),
+      strokeColor: Colors.green,
+      strokeWidth: 2,
+      polygonId: const PolygonId('1'),
+      points: const [
+        LatLng(30.610462363797186, 32.134679993310485),
+        LatLng(30.46025148605027, 32.030041751175865),
+        LatLng(30.30980865034631, 29.518723939944863),
+        LatLng(28.853892460258102, 29.93727690848337),
+      ],
+    );
+    polygons.add(polygon);
   }
 
   @override
@@ -127,6 +154,7 @@ class _HomeViewState extends State<HomeView> {
           ),
           */
           // mapType: MapType.hybrid,
+          polygons: polygons,
           polylines: polylines,
           markers: markers,
           style: mapStyle,

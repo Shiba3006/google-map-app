@@ -1,12 +1,14 @@
 import 'package:location/location.dart';
 
 class LocationService {
-  Location location = Location();
+  final Location _location ;
+
+  LocationService({required Location location}) : _location = location;
 
   Future<bool> checkAndRequestLocationService() async {
-    bool isServiceEnabled = await location.serviceEnabled();
+    bool isServiceEnabled = await _location.serviceEnabled();
     if (!isServiceEnabled) {
-      isServiceEnabled = await location.requestService();
+      isServiceEnabled = await _location.requestService();
       if (!isServiceEnabled) {
         return false;
       }
@@ -15,18 +17,22 @@ class LocationService {
   }
 
   Future<bool> checkAndRequestLocationPermision() async {
-    PermissionStatus permissionStatus = await location.hasPermission();
+    PermissionStatus permissionStatus = await _location.hasPermission();
     if (permissionStatus == PermissionStatus.deniedForever) {
       return false;
     }
     if (permissionStatus == PermissionStatus.denied) {
-      permissionStatus = await location.requestPermission();
+      permissionStatus = await _location.requestPermission();
       return permissionStatus == PermissionStatus.granted;
     }
     return true;
   }
 
   void getRealTimeLocayionData({required void Function(LocationData)? onData}) {
-    location.onLocationChanged.listen(onData);
+    _location.onLocationChanged.listen(onData);
+  }
+
+  void changeSettings({required double distanceFilter, required int interval}) {
+    _location.changeSettings(distanceFilter: distanceFilter, interval: interval);
   }
 }

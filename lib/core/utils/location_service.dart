@@ -36,4 +36,8 @@ class LocationService {
     _location.changeSettings(
         distanceFilter: distanceFilter, interval: interval);
   }
+
+  Future<LocationData> getLocation() {
+    return _location.getLocation();
+  }
 }

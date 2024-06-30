@@ -1,7 +1,7 @@
 import 'package:location/location.dart';
 
 class LocationService {
-  final Location _location ;
+  final Location _location;
 
   LocationService({required Location location}) : _location = location;
 
@@ -33,6 +33,7 @@ class LocationService {
   }
 
   void changeSettings({required double distanceFilter, required int interval}) {
-    _location.changeSettings(distanceFilter: distanceFilter, interval: interval);
+    _location.changeSettings(
+        distanceFilter: distanceFilter, interval: interval);
   }
 }

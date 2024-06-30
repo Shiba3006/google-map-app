@@ -13,7 +13,7 @@ class LocatioViewBody extends StatefulWidget {
 class _LocatioViewBodyState extends State<LocatioViewBody> {
   late CameraPosition initialCameraPosition;
   GoogleMapController? mapController;
-
+  bool isFirstCall = true;
   Set<Marker> markers = {};
   late LocationService locationService;
   @override
@@ -44,7 +44,7 @@ class _LocatioViewBodyState extends State<LocatioViewBody> {
   void initCameraPosition() {
     initialCameraPosition = const CameraPosition(
       target: LatLng(29.99552098735423, 31.205921201848618),
-      zoom: 15,
+      zoom: 1,
     );
   }
 
@@ -63,24 +63,32 @@ class _LocatioViewBodyState extends State<LocatioViewBody> {
           locationData.longitude!,
         );
         setMyLocationMarker(myLocationPosition);
-        setMyCameraPosition(myLocationPosition);
+        updateMyCamera(myLocationPosition);
       });
     } else {
       // TODO: handle this case
     }
   }
 
-  void setMyCameraPosition(LatLng myLocationPosition) {
-    var cameraPosition = CameraPosition(
-      target: myLocationPosition,
-      zoom: 15,
-    );
-
-    mapController?.animateCamera(
-      CameraUpdate.newCameraPosition(
-        cameraPosition,
-      ),
-    );
+  void updateMyCamera(LatLng myLocationPosition) {
+    if (isFirstCall) {
+      mapController?.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            target: myLocationPosition,
+            zoom: 15,
+          ),
+        ),
+      );
+      isFirstCall = false;
+      setState(() {});
+    } else {
+      mapController?.animateCamera(
+        CameraUpdate.newLatLng(
+          myLocationPosition,
+        ),
+      );
+    }
   }
 
   void setMyLocationMarker(LatLng myLocationPosition) {

@@ -11,8 +11,9 @@ class LocatioViewBody extends StatefulWidget {
 
 class _LocatioViewBodyState extends State<LocatioViewBody> {
   late CameraPosition initialCameraPosition;
-  late GoogleMapController mapController;
+  GoogleMapController? mapController;
   late Location location;
+  Set<Marker> markers = {};
   @override
   void initState() {
     super.initState();
@@ -22,17 +23,26 @@ class _LocatioViewBodyState extends State<LocatioViewBody> {
   }
 
   @override
+  void dispose() {
+    mapController!.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GoogleMap(
+      markers: markers,
       initialCameraPosition: initialCameraPosition,
-      onMapCreated: (controller) => mapController = controller,
+      onMapCreated: (controller) {
+        mapController = controller;
+      },
     );
   }
 
   void initCameraPosition() {
     initialCameraPosition = const CameraPosition(
       target: LatLng(29.99552098735423, 31.205921201848618),
-      zoom: 12,
+      zoom: 15,
     );
   }
 
@@ -61,12 +71,39 @@ class _LocatioViewBodyState extends State<LocatioViewBody> {
   }
 
   getLocationStreamData() {
-    location.onLocationChanged.listen((locationData) {});
+    location.changeSettings(
+      distanceFilter: 2,
+      interval: 1000, // 1 second
+    );
+    location.onLocationChanged.listen((locationData) {
+      var myLocationPosition = LatLng(
+        locationData.latitude!,
+        locationData.longitude!,
+      );
+      var myLocationMarker = Marker(
+        markerId: const MarkerId('myLocation'),
+        position: myLocationPosition,
+        infoWindow: const InfoWindow(title: 'My Location'),
+      );
+      markers.add(myLocationMarker);
+
+      var cameraPosition = CameraPosition(
+        target: myLocationPosition,
+        zoom: 15,
+      );
+      setState(() {});
+      mapController?.animateCamera(
+        CameraUpdate.newCameraPosition(
+          cameraPosition,
+        ),
+      );
+    });
   }
 
   void checkRequestUpdateLocation() async {
     await checkAndRequestLocationService();
     bool hasPermission = await checkAndRequestLocationPermision();
+
     if (hasPermission) {
       getLocationStreamData();
     } else {

@@ -1,3 +1,4 @@
+import 'package:google_map_app/core/utils/exceptions.dart';
 import 'package:location/location.dart';
 
 class LocationService {
@@ -10,7 +11,9 @@ class LocationService {
     if (!isServiceEnabled) {
       isServiceEnabled = await _location.requestService();
       if (!isServiceEnabled) {
-        throw LocationServiceException();
+        throw LocationServiceException(
+          errorMessage: "Location service is not enabled",
+        );
       }
     }
   }
@@ -18,12 +21,12 @@ class LocationService {
   Future<void> _checkAndRequestLocationPermision() async {
     PermissionStatus permissionStatus = await _location.hasPermission();
     if (permissionStatus == PermissionStatus.deniedForever) {
-      throw LocationPermissioneException();
+      throw LocationPermissioneException(errorMessage: "Permission denied forever");
     }
     if (permissionStatus == PermissionStatus.denied) {
       permissionStatus = await _location.requestPermission();
       if (permissionStatus != PermissionStatus.granted) {
-        throw LocationPermissioneException();
+        throw LocationPermissioneException(errorMessage: "Permission denied");
       }
     }
   }
@@ -47,6 +50,3 @@ class LocationService {
   }
 }
 
-class LocationServiceException implements Exception {}
-
-class LocationPermissioneException implements Exception {}

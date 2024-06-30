@@ -5,31 +5,27 @@ class LocationService {
 
   LocationService({required Location location}) : _location = location;
 
-  Future<bool> checkAndRequestLocationService() async {
+  Future<void> _checkAndRequestLocationService() async {
     bool isServiceEnabled = await _location.serviceEnabled();
     if (!isServiceEnabled) {
       isServiceEnabled = await _location.requestService();
       if (!isServiceEnabled) {
-        return false;
+        throw LocationServiceException();
       }
     }
-    return true;
   }
 
-  Future<bool> checkAndRequestLocationPermision() async {
+  Future<void> _checkAndRequestLocationPermision() async {
     PermissionStatus permissionStatus = await _location.hasPermission();
     if (permissionStatus == PermissionStatus.deniedForever) {
-      return false;
+      throw LocationPermissioneException();
     }
     if (permissionStatus == PermissionStatus.denied) {
       permissionStatus = await _location.requestPermission();
-      return permissionStatus == PermissionStatus.granted;
+      if (permissionStatus != PermissionStatus.granted) {
+        throw LocationPermissioneException();
+      }
     }
-    return true;
-  }
-
-  void getRealTimeLocayionData({required void Function(LocationData)? onData}) {
-    _location.onLocationChanged.listen(onData);
   }
 
   void changeSettings({required double distanceFilter, required int interval}) {
@@ -37,7 +33,20 @@ class LocationService {
         distanceFilter: distanceFilter, interval: interval);
   }
 
-  Future<LocationData> getLocation() {
+  void getRealTimeLocayionData(
+      {required void Function(LocationData)? onData}) async {
+    await _checkAndRequestLocationService();
+    await _checkAndRequestLocationPermision();
+    _location.onLocationChanged.listen(onData);
+  }
+
+  Future<LocationData> getLocation() async {
+    await _checkAndRequestLocationService();
+    await _checkAndRequestLocationPermision();
     return _location.getLocation();
   }
 }
+
+class LocationServiceException implements Exception {}
+
+class LocationPermissioneException implements Exception {}

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_map_app/core/utils/location_service.dart';
+import 'package:google_map_app/core/utils/test_location_service.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
@@ -15,11 +15,11 @@ class _LocatioViewBodyState extends State<LocatioViewBody> {
   GoogleMapController? mapController;
   bool isFirstCall = true;
   Set<Marker> markers = {};
-  late LocationService locationService;
+  late TestLocationService locationService;
   @override
   void initState() {
     super.initState();
-    locationService = LocationService(location: Location());
+    locationService = TestLocationService(location: Location());
     initCameraPosition();
     checkRequestUpdateLocation();
   }

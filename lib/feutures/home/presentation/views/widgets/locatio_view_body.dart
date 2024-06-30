@@ -70,7 +70,7 @@ class _LocatioViewBodyState extends State<LocatioViewBody> {
     return true;
   }
 
-  getLocationStreamData() {
+  void getLocationStreamData() {
     location.changeSettings(
       distanceFilter: 2,
       interval: 1000, // 1 second

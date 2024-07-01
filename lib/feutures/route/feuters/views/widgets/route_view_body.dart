@@ -86,6 +86,11 @@ class _RouteViewBodyState extends State<RouteViewBody> {
                 SearchListView(
                   places: places,
                   placesService: placesService,
+                  onPlaceSelected: (placeDetails) {
+                    controller.clear();
+                    places.clear();
+                    setState(() {});
+                  },
                 ),
               ],
             ),

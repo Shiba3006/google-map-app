@@ -12,7 +12,8 @@ class GoogleMapsPlacesService {
 
   Future<List<PlaceModel>> getPredictions({required String input}) async {
     var response = await _dio.get(
-        '${AppConstants.baseUrl}/autocomplete/json?key=${SecretKeys.placesRequestApiKey}&input=$input');
+      '${AppConstants.baseUrl}/autocomplete/json?key=${SecretKeys.placesRequestApiKey}&input=$input',
+    );
     if (response.statusCode == 200) {
       var data = response.data['predictions'];
 

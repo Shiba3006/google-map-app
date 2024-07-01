@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_map_app/core/utils/google_maps_places_service.dart';
+import 'package:google_map_app/feutures/route/data/models/place_details_model/place_details_model.dart';
 import 'package:google_map_app/feutures/route/data/models/places_model/places_auto_complete_model.dart';
 
 class SearchListView extends StatelessWidget {
   const SearchListView({
     super.key,
     required this.places,
-    required this.placesService,
+    required this.placesService, required this.onPlaceSelected,
   });
 
   final List<PlaceModel> places;
   final GoogleMapsPlacesService placesService;
+  final void Function(PlaceDetailsModel) onPlaceSelected;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -36,7 +38,7 @@ class SearchListView extends StatelessWidget {
             onTap: () async {
               var placeDetails = await placesService.getPlaceDetails(
                   placeId: places[index].placeId!);
-              print('======================> $placeDetails');
+              onPlaceSelected(placeDetails);
             },
             leading: const Icon(Icons.location_on),
             trailing: const Icon(Icons.chevron_right),

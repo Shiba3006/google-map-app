@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_map_app/core/utils/api_service.dart';
 import 'package:google_map_app/core/utils/exceptions.dart';
 import 'package:google_map_app/core/utils/places_service.dart';
@@ -171,7 +172,7 @@ class _RouteViewBodyState extends State<RouteViewBody> {
         .animateCamera(CameraUpdate.newCameraPosition(myCameraPosition));
   }
 
-  Future<RouteModel> getRouteData() async {
+  Future<List<LatLng>> getRouteData() async {
     Origin origin = Origin(
       location: LocationModel(
         latLng: LatLngModel(
@@ -194,6 +195,16 @@ class _RouteViewBodyState extends State<RouteViewBody> {
         destination: distination,
       ),
     );
-    return routes.routes!.first;
+    var polylinePoints = PolylinePoints();
+    List<LatLng> points = getDecodedRoutes(polylinePoints, routes);
+    return points;
+  }
+
+  List<LatLng> getDecodedRoutes(PolylinePoints polylinePoints, RoutesModel routes) {
+    List<PointLatLng> result = polylinePoints
+        .decodePolyline(routes.routes![0].polyline!.encodedPolyline!);
+    List<LatLng> points =
+        result.map((e) => LatLng(e.latitude, e.longitude)).toList();
+    return points;
   }
 }

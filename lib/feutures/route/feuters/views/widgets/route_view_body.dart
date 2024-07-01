@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:google_map_app/core/utils/api_service.dart';
 import 'package:google_map_app/core/utils/exceptions.dart';
 import 'package:google_map_app/core/utils/google_maps_places_service.dart';
 import 'package:google_map_app/core/utils/location_service.dart';
@@ -37,7 +38,7 @@ class _RouteViewBodyState extends State<RouteViewBody> {
     controller = TextEditingController();
     initCameraPosition();
     location = LocationService(location: Location());
-    placesService = GoogleMapsPlacesService(dio: Dio());
+    placesService = GoogleMapsPlacesService(apiService: ApiService(dio: Dio()));
     fetchPredictions();
   }
 

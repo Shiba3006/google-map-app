@@ -1,12 +1,12 @@
 class Northeast {
-  int? lat;
-  int? lng;
+  double? lat;
+  double? lng;
 
   Northeast({this.lat, this.lng});
 
   factory Northeast.fromJson(Map<String, dynamic> json) => Northeast(
-        lat: json['lat'] as int?,
-        lng: json['lng'] as int?,
+        lat: json['lat'] as double?,
+        lng: json['lng'] as double?,
       );
 
   Map<String, dynamic> toJson() => {

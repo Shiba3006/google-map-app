@@ -7,6 +7,7 @@ class SearchTextField extends StatelessWidget {
     required this.controller,
   });
   final TextEditingController controller;
+
   @override
   Widget build(BuildContext context) {
     return TextField(

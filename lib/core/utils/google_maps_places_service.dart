@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:google_map_app/core/utils/app_constants.dart';
 import 'package:google_map_app/core/utils/secret_keys.dart';
+import 'package:google_map_app/feutures/route/data/models/place_details_model/place_details_model.dart';
 import 'package:google_map_app/feutures/route/data/models/places_model/places_auto_complete_model.dart';
 
 class GoogleMapsPlacesService {
@@ -21,7 +22,18 @@ class GoogleMapsPlacesService {
       }
       return places;
     } else {
-      return [];
+      throw Exception();
+    }
+  }
+
+  Future<PlaceDetailsModel> getPlaceDetails({required String placeId}) async {
+    var response = await _dio.get(
+        '${AppConstants.baseUrl}/details/json?key=${SecretKeys.placesRequestApiKey}&place_id=$placeId');
+    if (response.statusCode == 200) {
+      var data = response.data['result'];
+      return PlaceDetailsModel.fromJson(data);
+    } else {
+      throw Exception();
     }
   }
 }

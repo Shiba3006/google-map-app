@@ -1,12 +1,14 @@
+import 'dart:ffi';
+
 class Southwest {
-  int? lat;
-  int? lng;
+  Double? lat;
+  Double? lng;
 
   Southwest({this.lat, this.lng});
 
   factory Southwest.fromJson(Map<String, dynamic> json) => Southwest(
-        lat: json['lat'] as int?,
-        lng: json['lng'] as int?,
+        lat: json['lat'] as Double?,
+        lng: json['lng'] as Double?,
       );
 
   Map<String, dynamic> toJson() => {

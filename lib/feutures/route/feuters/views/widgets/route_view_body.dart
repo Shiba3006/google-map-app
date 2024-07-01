@@ -83,7 +83,10 @@ class _RouteViewBodyState extends State<RouteViewBody> {
                   controller: controller,
                 ),
                 const SizedBox(height: 10),
-                SearchListView(places: places),
+                SearchListView(
+                  places: places,
+                  placesService: placesService,
+                ),
               ],
             ),
           ),

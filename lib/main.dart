@@ -7,9 +7,9 @@ import 'package:google_map_app/feutures/home/presentation/views/location_view.da
 import 'package:google_map_app/feutures/home/presentation/views/test_google_map_view.dart';
 import 'package:google_map_app/feutures/route/feuters/views/route_view.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await GoogleMapsPlacesService(dio: Dio()).getPredictions(input: 'cairo');
+void main() {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await GoogleMapsPlacesService(dio: Dio()).getPredictions(input: 'cairo');
   runApp(const MyApp());
 }
 

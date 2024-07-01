@@ -6,7 +6,7 @@ class RoutesService {
   RoutesService({required ApiService apiService}) : _apiService = apiService;
   final ApiService _apiService;
 
-  Future<RoutesModel> getRoutes({
+  Future<RoutesModel> fetchRoutes({
     required RoutesInputModel routesInputs,
   }) async {
     var response = await _apiService.post(

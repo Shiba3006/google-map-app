@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_map_app/feutures/home/data/models/place_model.dart';
+import 'package:google_map_app/feutures/home/data/models/home_place_model.dart';
 import 'package:google_map_app/feutures/home/presentation/manager/cubit/google_map_cubit.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';

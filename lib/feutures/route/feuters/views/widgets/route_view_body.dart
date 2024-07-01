@@ -1,24 +1,15 @@
-import 'dart:developer';
-import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_map_app/core/utils/api_service.dart';
 import 'package:google_map_app/core/utils/exceptions.dart';
+import 'package:google_map_app/core/utils/map_services.dart';
 import 'package:google_map_app/core/utils/places_service.dart';
 import 'package:google_map_app/core/utils/location_service.dart';
 import 'package:google_map_app/core/utils/routes_service.dart';
 import 'package:google_map_app/core/widgets/custom_text_filed.dart';
 import 'package:google_map_app/core/widgets/search_list_view.dart';
 import 'package:google_map_app/feutures/route/data/models/places_model/places_auto_complete_model.dart';
-import 'package:google_map_app/feutures/route/data/models/routes_input_model/destination.dart';
-import 'package:google_map_app/feutures/route/data/models/routes_input_model/lat_lng.dart';
-import 'package:google_map_app/feutures/route/data/models/routes_input_model/location.dart';
-import 'package:google_map_app/feutures/route/data/models/routes_input_model/origin.dart';
-import 'package:google_map_app/feutures/route/data/models/routes_input_model/routes_input_model.dart';
-import 'package:google_map_app/feutures/route/data/models/routes_model/route.dart';
-import 'package:google_map_app/feutures/route/data/models/routes_model/routes_model.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:uuid/uuid.dart';
@@ -32,47 +23,42 @@ class RouteViewBody extends StatefulWidget {
 
 class _RouteViewBodyState extends State<RouteViewBody> {
   late CameraPosition initialCameraPosition;
-  late LocationService locationService;
+
   late GoogleMapController googleMapController;
   late TextEditingController controller;
   Set<Marker> markers = {};
   Set<Polyline> polylines = {};
-  late PlacesService placesService;
+
   List<PlaceModel> places = [];
   late Uuid uuid;
   String? sessionToken;
-  late RoutesService routesService;
+
   late LatLng currentLocation;
   late LatLng currentDistination;
-
+  late MapServices mapServices;
   @override
   void initState() {
     super.initState();
-    routesService = RoutesService(apiService: ApiService(dio: Dio()));
     uuid = const Uuid();
     controller = TextEditingController();
     initCameraPosition();
-    locationService = LocationService(location: Location());
-    placesService = PlacesService(apiService: ApiService(dio: Dio()));
     fetchPredictions();
+    mapServices = MapServices(
+      locationService: LocationService(location: Location()),
+      placesService: PlacesService(apiService: ApiService(dio: Dio())),
+      routesService: RoutesService(apiService: ApiService(dio: Dio())),
+    );
   }
 
   void fetchPredictions() {
     controller.addListener(() async {
       sessionToken ??= uuid.v4();
-      print('======================> $sessionToken');
-      if (controller.text.isNotEmpty) {
-        var results = await placesService.getPredictions(
-          input: controller.text,
-          sessionToken: sessionToken!,
-        );
-        places.clear();
-        places.addAll(results);
-        setState(() {});
-      } else {
-        places.clear();
-        setState(() {});
-      }
+      await mapServices.getPredictions(
+        input: controller.text,
+        sessionToken: sessionToken!,
+        places: places,
+      );
+      setState(() {});
     });
   }
 
@@ -110,7 +96,7 @@ class _RouteViewBodyState extends State<RouteViewBody> {
                 const SizedBox(height: 10),
                 SearchListView(
                   places: places,
-                  placesService: placesService,
+                  mapServices: mapServices,
                   onPlaceSelected: (placeDetails) async {
                     controller.clear();
                     places.clear();
@@ -120,8 +106,15 @@ class _RouteViewBodyState extends State<RouteViewBody> {
                       placeDetails.geometry!.location!.lng!,
                     );
 
-                    var points = await getRouteData();
-                    displayRoute(points);
+                    var points = await mapServices.getRouteData(
+                      currentLocation: currentLocation,
+                      currentDistination: currentDistination,
+                    );
+                    mapServices.displayRoute(
+                      points: points,
+                      polylines: polylines,
+                      googleMapController: googleMapController,
+                    );
                     setState(() {});
                   },
                 ),
@@ -142,13 +135,11 @@ class _RouteViewBodyState extends State<RouteViewBody> {
 
   void updateCurrentLocation() async {
     try {
-      LocationData locationData = await locationService.getLocation();
-      currentLocation = LatLng(
-        locationData.latitude!,
-        locationData.longitude!,
+      currentLocation = await mapServices.updateCurrentLocation(
+        googleMapController: googleMapController,
+        markers: markers,
       );
-      addMarkerToMyLocation(currentLocation);
-      await animateCameraToMyLocation(currentLocation);
+      setState(() {});
     } on LocationServiceException catch (e) {
       // TODO
     } on LocationPermissioneException catch (e) {
@@ -157,26 +148,7 @@ class _RouteViewBodyState extends State<RouteViewBody> {
       // TODO
     }
   }
-
-  void addMarkerToMyLocation(LatLng myLocationPosition) {
-    Marker myLocationMarker = Marker(
-      markerId: const MarkerId('myLocation'),
-      position: myLocationPosition,
-      infoWindow: const InfoWindow(title: 'My Location'),
-    );
-    markers.add(myLocationMarker);
-    setState(() {});
-  }
-
-  Future<void> animateCameraToMyLocation(LatLng myLocationPosition) async {
-    CameraPosition myCameraPosition = CameraPosition(
-      target: myLocationPosition,
-      zoom: 16,
-    );
-    await googleMapController
-        .animateCamera(CameraUpdate.newCameraPosition(myCameraPosition));
-  }
-
+/*
   Future<List<LatLng>> getRouteData() async {
     Origin origin = Origin(
       location: LocationModel(
@@ -243,4 +215,5 @@ class _RouteViewBodyState extends State<RouteViewBody> {
       northeast: LatLng(northEastLatitude, northEastLongitude),
     );
   }
+  */
 }

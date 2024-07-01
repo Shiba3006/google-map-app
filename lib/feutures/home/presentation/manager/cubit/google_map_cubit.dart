@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:google_map_app/core/utils/app_constants.dart';
-import 'package:google_map_app/feutures/home/data/models/place_model.dart';
+import 'package:google_map_app/feutures/home/data/models/home_place_model.dart';
 import 'package:google_map_app/feutures/home/data/models/polygons_model.dart';
 import 'package:google_map_app/feutures/home/data/models/polyline_model.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';

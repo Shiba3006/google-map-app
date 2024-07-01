@@ -7,7 +7,8 @@ class SearchListView extends StatelessWidget {
   const SearchListView({
     super.key,
     required this.places,
-    required this.placesService, required this.onPlaceSelected,
+    required this.placesService,
+    required this.onPlaceSelected,
   });
 
   final List<PlaceModel> places;

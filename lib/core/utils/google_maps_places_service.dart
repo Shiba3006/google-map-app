@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:google_map_app/core/utils/app_constants.dart';
 import 'package:google_map_app/core/utils/secret_keys.dart';
@@ -10,7 +12,7 @@ class GoogleMapsPlacesService {
   Future<List<PlacesAutoCompleteModel>> getPredictions(
       {required String input}) async {
     var response = await _dio.get(
-        '${AppConstants.baseUrl}/autocomplete/json&key=${SecretKeys.placesRequestApiKey}&input=$input');
+        '${AppConstants.baseUrl}/autocomplete/json?key=${SecretKeys.placesRequestApiKey}&input=$input');
     if (response.statusCode == 200) {
       var data = response.data as Map<String, dynamic>;
       List<PlacesAutoCompleteModel> places =
@@ -18,6 +20,7 @@ class GoogleMapsPlacesService {
               .map((e) =>
                   PlacesAutoCompleteModel.fromJson(e as Map<String, dynamic>))
               .toList();
+      log('=========================> $places');
       return places;
     } else {
       return [];

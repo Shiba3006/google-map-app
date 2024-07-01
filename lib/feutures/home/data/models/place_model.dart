@@ -24,5 +24,4 @@ List<PlaceModel> places = [
     name: 'Place 3',
     position: const LatLng(29.9952259886316, 31.203128123349508),
   ),
- 
 ];

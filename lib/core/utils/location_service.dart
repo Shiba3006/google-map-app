@@ -21,7 +21,8 @@ class LocationService {
   Future<void> _checkAndRequestLocationPermision() async {
     PermissionStatus permissionStatus = await _location.hasPermission();
     if (permissionStatus == PermissionStatus.deniedForever) {
-      throw LocationPermissioneException(errorMessage: "Permission denied forever");
+      throw LocationPermissioneException(
+          errorMessage: "Permission denied forever");
     }
     if (permissionStatus == PermissionStatus.denied) {
       permissionStatus = await _location.requestPermission();
@@ -49,4 +50,3 @@ class LocationService {
     return _location.getLocation();
   }
 }
-

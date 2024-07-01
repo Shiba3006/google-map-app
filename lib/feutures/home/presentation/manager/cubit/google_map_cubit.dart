@@ -99,7 +99,7 @@ class GoogleMapCubit extends Cubit<GoogleMapState> {
       fillColor: Colors.green.withOpacity(0.2),
       strokeColor: Colors.green,
       strokeWidth: 2,
-      polygonId:  PolygonId(myPolygons[0].id),
+      polygonId: PolygonId(myPolygons[0].id),
       points: myPolygons[0].points,
     );
     polygons.add(polygon);

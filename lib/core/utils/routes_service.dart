@@ -18,13 +18,13 @@ class RoutesService {
         "computeAlternativeRoutes": false,
         "routeModifiers": routesInputs.routeModifiers != null
             ? routesInputs.routeModifiers!.toJson()
-            : RoutesInputModel().routeModifiers!.toJson(),
+            : RoutesInputModel().routeModifiers?.toJson(),
         "languageCode": "en-US",
         "units": "IMPERIAL"
       },
     );
     if (response.statusCode == 200) {
-      var data = response.data['routes'];
+      var data = response.data;
       return RoutesModel.fromJson(data);
     } else {
       throw Exception();

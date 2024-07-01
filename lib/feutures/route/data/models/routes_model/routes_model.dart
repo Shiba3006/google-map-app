@@ -5,7 +5,7 @@ class RoutesModel {
 
   RoutesModel({this.routes});
 
-  factory RoutesModel.fromJson(Map<String, dynamic> json) => RoutesModel(
+  factory RoutesModel.fromJson( json) => RoutesModel(
         routes: (json['routes'] as List<dynamic>?)
             ?.map((e) => RouteModel.fromJson(e as Map<String, dynamic>))
             .toList(),

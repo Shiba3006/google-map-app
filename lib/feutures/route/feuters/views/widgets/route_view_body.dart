@@ -35,6 +35,7 @@ class _RouteViewBodyState extends State<RouteViewBody> {
   late GoogleMapController googleMapController;
   late TextEditingController controller;
   Set<Marker> markers = {};
+  Set<Polyline> polylines = {};
   late PlacesService placesService;
   List<PlaceModel> places = [];
   late Uuid uuid;
@@ -87,6 +88,7 @@ class _RouteViewBodyState extends State<RouteViewBody> {
       child: Stack(
         children: [
           GoogleMap(
+            polylines: polylines,
             zoomControlsEnabled: false,
             markers: markers,
             initialCameraPosition: initialCameraPosition,
@@ -108,7 +110,7 @@ class _RouteViewBodyState extends State<RouteViewBody> {
                 SearchListView(
                   places: places,
                   placesService: placesService,
-                  onPlaceSelected: (placeDetails) {
+                  onPlaceSelected: (placeDetails) async {
                     controller.clear();
                     places.clear();
                     sessionToken = null;
@@ -116,8 +118,10 @@ class _RouteViewBodyState extends State<RouteViewBody> {
                       placeDetails.geometry!.location!.lat!,
                       placeDetails.geometry!.location!.lng!,
                     );
+                    
+                    var points = await getRouteData();
+                    displayRoute(points);
                     setState(() {});
-                    getRouteData();
                   },
                 ),
               ],
@@ -200,11 +204,23 @@ class _RouteViewBodyState extends State<RouteViewBody> {
     return points;
   }
 
-  List<LatLng> getDecodedRoutes(PolylinePoints polylinePoints, RoutesModel routes) {
+  List<LatLng> getDecodedRoutes(
+      PolylinePoints polylinePoints, RoutesModel routes) {
     List<PointLatLng> result = polylinePoints
         .decodePolyline(routes.routes![0].polyline!.encodedPolyline!);
     List<LatLng> points =
         result.map((e) => LatLng(e.latitude, e.longitude)).toList();
     return points;
+  }
+  
+  void displayRoute(List<LatLng> points) {
+    Polyline polyline = Polyline(
+      polylineId: const PolylineId('route'),
+      color: Colors.blue,
+      width: 5,
+      points: points,
+    );
+    polylines.add(polyline);
+    setState(() {});
   }
 }

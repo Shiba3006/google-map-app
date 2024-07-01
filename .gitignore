@@ -46,3 +46,4 @@ app.*.map.json
 lib/secret_keys.dart
 android/app/src/main/AndroidManifest.xml
 ios/Runner/AppDelegate.swift
+lib/core/utils/secret_keys.dart

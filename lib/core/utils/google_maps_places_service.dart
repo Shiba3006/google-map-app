@@ -10,9 +10,10 @@ class GoogleMapsPlacesService {
   GoogleMapsPlacesService({required Dio dio}) : _dio = dio;
   final Dio _dio;
 
-  Future<List<PlaceModel>> getPredictions({required String input}) async {
+  Future<List<PlaceModel>> getPredictions(
+      {required String input, required String sessionToken}) async {
     var response = await _dio.get(
-      '${AppConstants.baseUrl}/autocomplete/json?key=${SecretKeys.placesRequestApiKey}&input=$input',
+      '${AppConstants.baseUrl}/autocomplete/json?key=${SecretKeys.placesRequestApiKey}&input=$input,&sessiontoken=$sessionToken',
     );
     if (response.statusCode == 200) {
       var data = response.data['predictions'];

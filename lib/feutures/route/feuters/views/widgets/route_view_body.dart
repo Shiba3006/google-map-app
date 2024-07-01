@@ -10,6 +10,7 @@ import 'package:google_map_app/core/widgets/search_list_view.dart';
 import 'package:google_map_app/feutures/route/data/models/places_model/places_auto_complete_model.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:uuid/uuid.dart';
 
 class RouteViewBody extends StatefulWidget {
   const RouteViewBody({super.key});
@@ -26,10 +27,13 @@ class _RouteViewBodyState extends State<RouteViewBody> {
   Set<Marker> markers = {};
   late GoogleMapsPlacesService placesService;
   List<PlaceModel> places = [];
+  late Uuid uuid;
+  String? sessionToken;
 
   @override
   void initState() {
     super.initState();
+    uuid = const Uuid();
     controller = TextEditingController();
     initCameraPosition();
     location = LocationService(location: Location());
@@ -39,9 +43,13 @@ class _RouteViewBodyState extends State<RouteViewBody> {
 
   void fetchPredictions() {
     controller.addListener(() async {
+      sessionToken ??= uuid.v4();
+      print('======================> $sessionToken');
       if (controller.text.isNotEmpty) {
-        var results =
-            await placesService.getPredictions(input: controller.text);
+        var results = await placesService.getPredictions(
+          input: controller.text,
+          sessionToken: sessionToken!,
+        );
         places.clear();
         places.addAll(results);
         setState(() {});
@@ -89,6 +97,7 @@ class _RouteViewBodyState extends State<RouteViewBody> {
                   onPlaceSelected: (placeDetails) {
                     controller.clear();
                     places.clear();
+                    sessionToken = null;
                     setState(() {});
                   },
                 ),

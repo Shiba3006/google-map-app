@@ -1,0 +1,124 @@
+{
+    "address_components": [
+        {
+            "long_name": "Canada",
+            "short_name": "CA",
+            "types": [
+                "country",
+                "political"
+            ]
+        }
+    ],
+    "formatted_address": "Canada",
+    "geometry": {
+        "location": {
+            "lat": 56.130366,
+            "lng": -106.346771
+        },
+        "viewport": {
+            "northeast": {
+                "lat": 70,
+                "lng": -50
+            },
+            "southwest": {
+                "lat": 42,
+                "lng": -142
+            }
+        }
+    },
+    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/geocode-71.png",
+    "icon_background_color": "#7B9EB0",
+    "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet",
+    "name": "Canada",
+    "photos": [
+        {
+            "height": 1848,
+            "html_attributions": [
+                "https://maps.google.com/maps/contrib/101762903613074079939"
+            ],
+            "photo_reference": "AUc7tXVRygy3SaFS9mYYU_IP5c0JVkKnPx55IXWNWm2kjwveBIq-t2i8epPcCiJoEi1KllMKsLo4cgyP2Se2JdSH3UvV87ndSqrUDNoZghky3pGJdfCN1sjvGiF5wfLlTqtVL5za8qR_nVEIHz5kAzmgU6fuxEAI8lW8Ob-5TbVaI3O6Npt9",
+            "width": 4000
+        },
+        {
+            "height": 1960,
+            "html_attributions": [
+                "https://maps.google.com/maps/contrib/111438603177323038004"
+            ],
+            "photo_reference": "AUc7tXVy8unOYvJyAajSVt8r1V05JR9xnlMP4aPQIdGJ6es3qdiX90Bg3UilfG8KLKmar252dEviZLeAXCTXV3azgqLP9H8J485u77FBjHholQYN-er1w35fp3a5Q9hJNo_iRlQOk-TAfXIWczj3JtsxCMrgMgRaIlxu131XEPFD32AkkHkI",
+            "width": 4032
+        },
+        {
+            "height": 480,
+            "html_attributions": [
+                "https://maps.google.com/maps/contrib/106831841410328247524"
+            ],
+            "photo_reference": "AUc7tXVZyLetGxKAMqokPOR7oKvhYBH5yTzpbSlxwxOxCTt_Fu5HxutfSoLspyCKuDPGunWWdH1bAkopRGtoRKqIJ43Acxs_r-NH1g6Ksqi3vrqR3uk6kvXyZjs6iv0l3PMTIPCyvnVqyAeAiqc7hJALjozOO-vpdSVDNdHbuTvq71Nvbsds",
+            "width": 750
+        },
+        {
+            "height": 1848,
+            "html_attributions": [
+                "https://maps.google.com/maps/contrib/101762903613074079939"
+            ],
+            "photo_reference": "AUc7tXVpi0B9GXeBiwX_eEdDGeh4KfjB_bcmiDNjkdZ55zPHmT9Um_zG1oO8FA8fmDEtQbqA4epcFwo6BKTbGITBFeVbmWfKcd4cr_dDPvLIu3zwBax3D6uOVPwdzjCspvMz2jOuNcnDQeNnWH7Lkf1WoqauKJgroelGyY-AV83gUy9W4LQj",
+            "width": 4000
+        },
+        {
+            "height": 1848,
+            "html_attributions": [
+                "https://maps.google.com/maps/contrib/101762903613074079939"
+            ],
+            "photo_reference": "AUc7tXXTy8tAwJNcZfiWSlolAhiLSigVNhljdzWEaxuU61wDmeAqRtTXVOwTC2naKk9yOtDGkge3N1Vo7631D-1BHVhC4OVxhAGal9cynMntO2EaNS7TDKZF_hsmgTr6SwxPe-yfGPjAhAr23VwBVyR1Wng8qXocdGW6cSwT5qRJXuSYxoGE",
+            "width": 4000
+        },
+        {
+            "height": 1848,
+            "html_attributions": [
+                "https://maps.google.com/maps/contrib/101762903613074079939"
+            ],
+            "photo_reference": "AUc7tXWCdY2KpSLxVo7rMfLyzrGk99jwnXrKMvvLfgYj2obnJCscIJI9fxn6O_v0H9JLTKRbwZl9jBCHJUKK1qjyuRMAyebDEM_WYh35ZvzuA8hvGoIo7m9iIHZvfjwo-ULJfuOT3sAKjwfZfxxyh2UVeOlsLQkYb4GxMITohi7TALyDfkWR",
+            "width": 4000
+        },
+        {
+            "height": 4000,
+            "html_attributions": [
+                "https://maps.google.com/maps/contrib/101762903613074079939"
+            ],
+            "photo_reference": "AUc7tXXyiXQaqke9fiTfMdAg5ZIRyrfSZa-WW6vsXzrWJbZ62LxYT1V9sxXvmJ2C3q_l-quzMWGfrJssFdQTHktyu3XUhkNkYZiYGf7B4xhEMV2Q2BE44w5AG7-CFGmGOJzNl3zi3uNDs5NdOF9ZAJmPd6bE5TIuDSZGWrE9cYXqn990QOWD",
+            "width": 1848
+        },
+        {
+            "height": 4000,
+            "html_attributions": [
+                "https://maps.google.com/maps/contrib/101762903613074079939"
+            ],
+            "photo_reference": "AUc7tXWPZGPp1jCf4bPTMNK72DWgH0JrJSqOYvsReORxtVOVN3eaZAaLdRW4AHthWKd3C__AxkDSQeOXuP7ugkGqZpHLDoPJycM4ZWgSiuNd9U6imMdnzD0cJgMQkM8QuRHFJMgwxwpgXIaxUHmv2gQ5cQ89WmNlZkIQNDBGdwsmq8PiO__B",
+            "width": 1848
+        },
+        {
+            "height": 1960,
+            "html_attributions": [
+                "https://maps.google.com/maps/contrib/111438603177323038004"
+            ],
+            "photo_reference": "AUc7tXUSZFEfLV8EP5ab0sWQ2i9KP_iGPfk1P-g4Yp7iLKIQWKCc-nkSYPsjhhigHuRy9UqZ8i-KvH5GDvY-ox_trMYru_3kILoKJnw9d7nehdgNipvcmzTagjF1xI9puHtI23vWQgIMedHyky50pu5tiybMzJqo94nA1cAnv0qScz-nfWlG",
+            "width": 4032
+        },
+        {
+            "height": 4000,
+            "html_attributions": [
+                "https://maps.google.com/maps/contrib/101762903613074079939"
+            ],
+            "photo_reference": "AUc7tXXJWZZRMMJfMulB84qMwRbAeQcrzIuGe9J12mOItZs4a7R87H6jnNhpnYVKLbEidJj_0ZxxJbEAzrvi9DCTEEMp4lLEdwbJj9btlkiomo69zkMdVoiI6-WIC5rSbMEa2tQonfVz9vvHi4xH1wozLp4GTGk3D4lkMmtS--ywUTpca32q",
+            "width": 1848
+        }
+    ],
+    "place_id": "ChIJ2WrMN9MDDUsRpY9Doiq3aJk",
+    "reference": "ChIJ2WrMN9MDDUsRpY9Doiq3aJk",
+    "types": [
+        "country",
+        "political"
+    ],
+    "url": "https://maps.google.com/?q=Canada&ftid=0x4b0d03d337cc6ad9:0x9968b72aa2438fa5",
+    "utc_offset": -360,
+    "website": "http://www.gc.ca/"
+}

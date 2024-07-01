@@ -7,7 +7,7 @@ import 'package:google_map_app/core/utils/google_maps_places_service.dart';
 import 'package:google_map_app/core/utils/location_service.dart';
 import 'package:google_map_app/core/widgets/custom_text_filed.dart';
 import 'package:google_map_app/core/widgets/search_list_view.dart';
-import 'package:google_map_app/feutures/route/data/models/places_auto_complete_model/places_auto_complete_model.dart';
+import 'package:google_map_app/feutures/route/data/models/places_model/places_auto_complete_model.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
@@ -25,7 +25,7 @@ class _RouteViewBodyState extends State<RouteViewBody> {
   late TextEditingController controller;
   Set<Marker> markers = {};
   late GoogleMapsPlacesService placesService;
-  List<PlacesAutoCompleteModel> places = [];
+  List<PlaceModel> places = [];
 
   @override
   void initState() {
@@ -44,11 +44,12 @@ class _RouteViewBodyState extends State<RouteViewBody> {
             await placesService.getPredictions(input: controller.text);
         places.clear();
         places.addAll(results);
-        print('========================$places');
+        setState(() {});
+      } else {
+        places.clear();
+        setState(() {});
       }
     });
-
-    setState(() {});
   }
 
   @override
@@ -81,6 +82,7 @@ class _RouteViewBodyState extends State<RouteViewBody> {
                 SearchTextField(
                   controller: controller,
                 ),
+                const SizedBox(height: 10),
                 SearchListView(places: places),
               ],
             ),

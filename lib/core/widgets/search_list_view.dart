@@ -1,6 +1,5 @@
-
 import 'package:flutter/material.dart';
-import 'package:google_map_app/feutures/route/data/models/places_auto_complete_model/places_auto_complete_model.dart';
+import 'package:google_map_app/feutures/route/data/models/places_model/places_auto_complete_model.dart';
 
 class SearchListView extends StatelessWidget {
   const SearchListView({
@@ -8,19 +7,36 @@ class SearchListView extends StatelessWidget {
     required this.places,
   });
 
-  final List<PlacesAutoCompleteModel> places;
+  final List<PlaceModel> places;
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      shrinkWrap: true,
-      itemCount: places.length,
-      separatorBuilder: (context, index) {
-        return const Divider();
-      },
-      itemBuilder: (context, index) {
-        return Text(places[index].description!);
-      },
+    return Container(
+      color: Colors.white.withOpacity(0.5),
+      child: ListView.separated(
+        shrinkWrap: true,
+        itemCount: places.length,
+        separatorBuilder: (context, index) {
+          return const Divider(
+            height: 0,
+          );
+        },
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(
+              places[index].description!,
+              style: const TextStyle(
+                color: Colors.black,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            onTap: () {},
+            leading: const Icon(Icons.location_on),
+            trailing: const Icon(Icons.chevron_right),
+          );
+        },
+      ),
     );
   }
 }

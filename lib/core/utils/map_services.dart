@@ -17,14 +17,16 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
 class MapServices {
-  final LocationService locationService;
-  final PlacesService placesService;
-  final RoutesService routesService;
-
   MapServices(
       {required this.locationService,
       required this.placesService,
       required this.routesService});
+
+  final LocationService locationService;
+  final PlacesService placesService;
+  final RoutesService routesService;
+
+  LatLng? currentLocation;
 
   Future<void> getPredictions({
     required String input,
@@ -46,14 +48,13 @@ class MapServices {
   }
 
   Future<List<LatLng>> getRouteData({
-    required LatLng currentLocation,
     required LatLng currentDistination,
   }) async {
     Origin origin = Origin(
       location: LocationModel(
         latLng: LatLngModel(
-          latitude: currentLocation.latitude,
-          longitude: currentLocation.longitude,
+          latitude: currentLocation!.latitude,
+          longitude: currentLocation!.longitude,
         ),
       ),
     );
@@ -118,24 +119,26 @@ class MapServices {
     );
   }
 
-  Future<LatLng> updateCurrentLocation({
+  void updateCurrentLocation({
     required GoogleMapController googleMapController,
     required Set<Marker> markers,
-  }) async {
-    LocationData locationData = await locationService.getLocation();
-    var currentLocation = LatLng(
-      locationData.latitude!,
-      locationData.longitude!,
-    );
-    addMarkerToMyLocation(
-      myLocationPosition: currentLocation,
-      markers: markers,
-    );
-    await animateCameraToMyLocation(
-      myLocationPosition: currentLocation,
-      googleMapController: googleMapController,
-    );
-    return currentLocation;
+    required Function onUpdate,
+  }) {
+    locationService.getRealTimeLocayionData(onData: (locationData) async {
+      currentLocation = LatLng(
+        locationData.latitude!,
+        locationData.longitude!,
+      );
+      addMarkerToMyLocation(
+        myLocationPosition: currentLocation!,
+        markers: markers,
+      );
+      await animateCameraToMyLocation(
+        myLocationPosition: currentLocation!,
+        googleMapController: googleMapController,
+      );
+      onUpdate();
+    });
   }
 
   void addMarkerToMyLocation({
@@ -154,12 +157,9 @@ class MapServices {
     required LatLng myLocationPosition,
     required GoogleMapController googleMapController,
   }) async {
-    CameraPosition myCameraPosition = CameraPosition(
-      target: myLocationPosition,
-      zoom: 16,
+    await googleMapController.animateCamera(
+      CameraUpdate.newLatLng(myLocationPosition),
     );
-    await googleMapController
-        .animateCamera(CameraUpdate.newCameraPosition(myCameraPosition));
   }
 
   Future<PlaceDetailsModel> getPlaceDetails({required String placeId}) async {

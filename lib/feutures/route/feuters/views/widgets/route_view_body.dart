@@ -33,7 +33,6 @@ class _RouteViewBodyState extends State<RouteViewBody> {
   List<PlaceModel> places = [];
   late Uuid uuid;
   String? sessionToken;
-  late LatLng currentLocation;
   late LatLng currentDistination;
   late MapServices mapServices;
   Timer? debounce;
@@ -115,7 +114,6 @@ class _RouteViewBodyState extends State<RouteViewBody> {
                     );
 
                     var points = await mapServices.getRouteData(
-                      currentLocation: currentLocation,
                       currentDistination: currentDistination,
                     );
                     mapServices.displayRoute(
@@ -143,11 +141,13 @@ class _RouteViewBodyState extends State<RouteViewBody> {
 
   void updateCurrentLocation() async {
     try {
-      currentLocation = await mapServices.updateCurrentLocation(
+      mapServices.updateCurrentLocation(
         googleMapController: googleMapController,
         markers: markers,
+        onUpdate: () {
+          setState(() {});
+        },
       );
-      setState(() {});
     } on LocationServiceException catch (e) {
       // TODO
     } on LocationPermissioneException catch (e) {

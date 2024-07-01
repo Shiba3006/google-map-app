@@ -1,3 +1,4 @@
+import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -32,10 +33,11 @@ class _RouteViewBodyState extends State<RouteViewBody> {
   List<PlaceModel> places = [];
   late Uuid uuid;
   String? sessionToken;
-
   late LatLng currentLocation;
   late LatLng currentDistination;
   late MapServices mapServices;
+  Timer? debounce;
+
   @override
   void initState() {
     super.initState();
@@ -50,23 +52,29 @@ class _RouteViewBodyState extends State<RouteViewBody> {
     );
   }
 
-  void fetchPredictions() {
-    controller.addListener(() async {
-      sessionToken ??= uuid.v4();
-      await mapServices.getPredictions(
-        input: controller.text,
-        sessionToken: sessionToken!,
-        places: places,
-      );
-      setState(() {});
-    });
-  }
-
   @override
   void dispose() {
     googleMapController.dispose();
     controller.dispose();
+    debounce?.cancel();
     super.dispose();
+  }
+
+  void fetchPredictions() {
+    controller.addListener(() {
+      if (debounce?.isActive ?? false) {
+        debounce?.cancel();
+      }
+      debounce = Timer(const Duration(milliseconds: 100), () async {
+        sessionToken ??= uuid.v4();
+        await mapServices.getPredictions(
+          input: controller.text,
+          sessionToken: sessionToken!,
+          places: places,
+        );
+        setState(() {});
+      });
+    });
   }
 
   @override
@@ -148,72 +156,4 @@ class _RouteViewBodyState extends State<RouteViewBody> {
       // TODO
     }
   }
-/*
-  Future<List<LatLng>> getRouteData() async {
-    Origin origin = Origin(
-      location: LocationModel(
-        latLng: LatLngModel(
-          latitude: currentLocation.latitude,
-          longitude: currentLocation.longitude,
-        ),
-      ),
-    );
-    Destination distination = Destination(
-      location: LocationModel(
-        latLng: LatLngModel(
-          latitude: currentDistination.latitude,
-          longitude: currentDistination.longitude,
-        ),
-      ),
-    );
-    RoutesModel routes = await routesService.fetchRoutes(
-      routesInputs: RoutesInputModel(
-        origin: origin,
-        destination: distination,
-      ),
-    );
-    var polylinePoints = PolylinePoints();
-    List<LatLng> points = getDecodedRoutes(polylinePoints, routes);
-    return points;
-  }
-
-  List<LatLng> getDecodedRoutes(
-      PolylinePoints polylinePoints, RoutesModel routes) {
-    List<PointLatLng> result = polylinePoints
-        .decodePolyline(routes.routes![0].polyline!.encodedPolyline!);
-    List<LatLng> points =
-        result.map((e) => LatLng(e.latitude, e.longitude)).toList();
-    return points;
-  }
-
-  void displayRoute(List<LatLng> points) {
-    Polyline polyline = Polyline(
-      polylineId: const PolylineId('route'),
-      color: Colors.blue,
-      width: 5,
-      points: points,
-    );
-    polylines.add(polyline);
-    LatLngBounds bounds = getLatLngBounds(points);
-    googleMapController.animateCamera(CameraUpdate.newLatLngBounds(bounds, 32));
-    setState(() {});
-  }
-
-  LatLngBounds getLatLngBounds(List<LatLng> points) {
-    var southWestLatitude = points.first.latitude;
-    var southWestLongitude = points.first.longitude;
-    var northEastLatitude = points.first.latitude;
-    var northEastLongitude = points.first.longitude;
-    for (LatLng point in points) {
-      southWestLatitude = min(southWestLatitude, point.latitude);
-      southWestLongitude = min(southWestLongitude, point.longitude);
-      northEastLatitude = max(northEastLatitude, point.latitude);
-      northEastLongitude = max(northEastLongitude, point.longitude);
-    }
-    return LatLngBounds(
-      southwest: LatLng(southWestLatitude, southWestLongitude),
-      northeast: LatLng(northEastLatitude, northEastLongitude),
-    );
-  }
-  */
 }

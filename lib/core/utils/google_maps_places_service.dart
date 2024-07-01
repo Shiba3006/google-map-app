@@ -14,13 +14,20 @@ class GoogleMapsPlacesService {
     var response = await _dio.get(
         '${AppConstants.baseUrl}/autocomplete/json?key=${SecretKeys.placesRequestApiKey}&input=$input');
     if (response.statusCode == 200) {
-      var data = response.data as Map<String, dynamic>;
+      var data = response.data['predictions'];
+
+      List<PlacesAutoCompleteModel> places = [];
+      for (var element in data) {
+        places.add(PlacesAutoCompleteModel.fromJson(element));
+      }
+/*
       List<PlacesAutoCompleteModel> places =
           (data['predictions'] as List<dynamic>)
               .map((e) =>
                   PlacesAutoCompleteModel.fromJson(e as Map<String, dynamic>))
               .toList();
-      log('=========================> $places');
+              */
+      log('=========================> ${places.toString()}');
       return places;
     } else {
       return [];

@@ -12,7 +12,6 @@ class _RouteViewState extends State<RouteView> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      
       resizeToAvoidBottomInset: false,
       body: RouteViewBody(),
     );

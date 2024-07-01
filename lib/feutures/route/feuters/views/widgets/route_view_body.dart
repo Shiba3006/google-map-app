@@ -1,10 +1,13 @@
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_map_app/core/utils/exceptions.dart';
 import 'package:google_map_app/core/utils/google_maps_places_service.dart';
 import 'package:google_map_app/core/utils/location_service.dart';
 import 'package:google_map_app/core/widgets/custom_text_filed.dart';
+import 'package:google_map_app/core/widgets/search_list_view.dart';
+import 'package:google_map_app/feutures/route/data/models/places_auto_complete_model/places_auto_complete_model.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
@@ -21,25 +24,31 @@ class _RouteViewBodyState extends State<RouteViewBody> {
   late GoogleMapController googleMapController;
   late TextEditingController controller;
   Set<Marker> markers = {};
-  late GoogleMapsPlacesService googleMapsPlacesService;
+  late GoogleMapsPlacesService placesService;
+  List<PlacesAutoCompleteModel> places = [];
 
   @override
   void initState() {
     super.initState();
+    controller = TextEditingController();
     initCameraPosition();
     location = LocationService(location: Location());
-    controller = TextEditingController();
+    placesService = GoogleMapsPlacesService(dio: Dio());
     fetchPredictions();
   }
 
   void fetchPredictions() {
-    if (controller.text.isNotEmpty) {
-      controller.addListener(() async {
-        var results = await googleMapsPlacesService.getPredictions(
-            input: controller.text);
-        log(results.toString());
-      });
-    }
+    controller.addListener(() async {
+      if (controller.text.isNotEmpty) {
+        var results =
+            await placesService.getPredictions(input: controller.text);
+        places.clear();
+        places.addAll(results);
+        print('========================$places');
+      }
+    });
+
+    setState(() {});
   }
 
   @override
@@ -67,8 +76,13 @@ class _RouteViewBodyState extends State<RouteViewBody> {
             top: 16,
             right: 16,
             left: 16,
-            child: CustomTextField(
-              controller: controller,
+            child: Column(
+              children: [
+                SearchTextField(
+                  controller: controller,
+                ),
+                SearchListView(places: places),
+              ],
             ),
           ),
         ],

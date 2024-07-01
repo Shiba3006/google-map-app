@@ -1,11 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-class CustomTextField extends StatelessWidget {
-  const CustomTextField({
-    super.key, required this.controller,
+class SearchTextField extends StatelessWidget {
+  const SearchTextField({
+    super.key,
+    required this.controller,
   });
-final TextEditingController controller ;
+  final TextEditingController controller;
   @override
   Widget build(BuildContext context) {
     return TextField(

@@ -32,7 +32,7 @@ class RouteViewBody extends StatefulWidget {
 
 class _RouteViewBodyState extends State<RouteViewBody> {
   late CameraPosition initialCameraPosition;
-  late LocationService location;
+  late LocationService locationService;
   late GoogleMapController googleMapController;
   late TextEditingController controller;
   Set<Marker> markers = {};
@@ -52,7 +52,7 @@ class _RouteViewBodyState extends State<RouteViewBody> {
     uuid = const Uuid();
     controller = TextEditingController();
     initCameraPosition();
-    location = LocationService(location: Location());
+    locationService = LocationService(location: Location());
     placesService = PlacesService(apiService: ApiService(dio: Dio()));
     fetchPredictions();
   }
@@ -142,7 +142,7 @@ class _RouteViewBodyState extends State<RouteViewBody> {
 
   void updateCurrentLocation() async {
     try {
-      LocationData locationData = await location.getLocation();
+      LocationData locationData = await locationService.getLocation();
       currentLocation = LatLng(
         locationData.latitude!,
         locationData.longitude!,

@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_map_app/core/utils/api_service.dart';
 import 'package:google_map_app/core/utils/exceptions.dart';
-import 'package:google_map_app/core/utils/google_maps_places_service.dart';
+import 'package:google_map_app/core/utils/places_service.dart';
 import 'package:google_map_app/core/utils/location_service.dart';
 import 'package:google_map_app/core/widgets/custom_text_filed.dart';
 import 'package:google_map_app/core/widgets/search_list_view.dart';
@@ -26,7 +26,7 @@ class _RouteViewBodyState extends State<RouteViewBody> {
   late GoogleMapController googleMapController;
   late TextEditingController controller;
   Set<Marker> markers = {};
-  late GoogleMapsPlacesService placesService;
+  late PlacesService placesService;
   List<PlaceModel> places = [];
   late Uuid uuid;
   String? sessionToken;
@@ -38,7 +38,7 @@ class _RouteViewBodyState extends State<RouteViewBody> {
     controller = TextEditingController();
     initCameraPosition();
     location = LocationService(location: Location());
-    placesService = GoogleMapsPlacesService(apiService: ApiService(dio: Dio()));
+    placesService = PlacesService(apiService: ApiService(dio: Dio()));
     fetchPredictions();
   }
 

@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_map_app/core/utils/google_maps_places_service.dart';
+import 'package:google_map_app/core/utils/places_service.dart';
 import 'package:google_map_app/feutures/home/presentation/manager/cubit/google_map_cubit.dart';
 import 'package:google_map_app/feutures/home/presentation/views/location_view.dart';
 import 'package:google_map_app/feutures/home/presentation/views/test_google_map_view.dart';

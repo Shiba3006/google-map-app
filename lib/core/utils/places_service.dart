@@ -7,9 +7,8 @@ import 'package:google_map_app/core/utils/secret_keys.dart';
 import 'package:google_map_app/feutures/route/data/models/place_details_model/place_details_model.dart';
 import 'package:google_map_app/feutures/route/data/models/places_model/places_auto_complete_model.dart';
 
-class GoogleMapsPlacesService {
-  GoogleMapsPlacesService({required ApiService apiService})
-      : _apiService = apiService;
+class PlacesService {
+  PlacesService({required ApiService apiService}) : _apiService = apiService;
 
   final ApiService _apiService;
 

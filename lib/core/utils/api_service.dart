@@ -12,7 +12,28 @@ class ApiService {
     required String extras,
   }) async {
     var response = await _dio.get(
-        '${AppConstants.baseUrl}/$endPoint/json?key=${SecretKeys.placesRequestApiKey}$extras');
+        '${AppConstants.placesBaseUrl}/$endPoint/json?key=${SecretKeys.placesRequestApiKey}$extras');
+
+    return response;
+  }
+
+  Future<Response<dynamic>> post({
+    required body,
+  }) async {
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'X-Goog-Api-Key': SecretKeys.placesRequestApiKey,
+      'X-Goog-FieldMask':
+          'routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline',
+    };
+
+    var response = await _dio.post(
+      AppConstants.rotesBaseUrl,
+      options: Options(
+        headers: headers,
+      ),
+      data: body,
+    );
 
     return response;
   }
